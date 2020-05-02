@@ -21,75 +21,75 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// DBŠÖ˜A‚Ì‰Šúİ’è
+		// DBï¿½Ö˜Aï¿½Ìï¿½ï¿½ï¿½ï¿½İ’ï¿½
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
-		// •¶šƒR[ƒh‚Ìİ’è
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½[ï¿½hï¿½Ìİ’ï¿½
 		request.setCharacterEncoding("Windows-31J");
 
-		// index.jsp‚Å“ü—Í‚µ‚½name‚Ìæ“¾
+		// index.jspï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½nameï¿½Ìæ“¾
 		String name = request.getParameter("name");
 
-		// index.jsp‚Å“ü—Í‚µ‚½id‚Ìæ“¾
+		// index.jspï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½idï¿½Ìæ“¾
 		String id = request.getParameter("id");
 
-		// index.jsp‚Å“ü—Í‚µ‚½sei‚Ìæ“¾
+		// index.jspï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½seiï¿½Ìæ“¾
 		String sei = request.getParameter("sei");
 
-		// index.jsp‚Å“ü—Í‚µ‚½nen‚Ìæ“¾
+		// index.jspï¿½Å“ï¿½ï¿½Í‚ï¿½ï¿½ï¿½nenï¿½Ìæ“¾
 		String nen = request.getParameter("nen");
 		
 	
 		try {
-			// JDBC Driver ‚Ì“o˜^
+			// JDBC Driver ï¿½Ì“oï¿½^
 			Class.forName("com.mysql.jdbc.Driver");
-			// Connection‚Ìì¬
+			// Connectionï¿½Ìì¬
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/company_db?serverTimezone=UTC&useSSL=false",
 					"suser", "spass");
 
-			// sql•¶ì¬‚Ì€”õ
+			// sqlï¿½ï¿½ï¿½ì¬ï¿½Ìï¿½ï¿½ï¿½
 			StringBuffer sql = new StringBuffer();
 
-			// sql•¶ ‚Ìì¬iname‚©‚çj
+			// sqlï¿½ï¿½ ï¿½Ìì¬ï¿½inameï¿½ï¿½ï¿½ï¿½j
 			sql.append("select id, name, sei, nen, address from shain_table where name like '%");
 			sql.append(name + "%'");
 
-			// id‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Ç‰Á‚·‚é
+			// idï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡ï¿½ÍAï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (id != "") {
 				sql.append("and id ='" + id + "'");
 			}
 
-			// sei‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Ç‰Á‚·‚é
+			// seiï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡ï¿½ÍAï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (sei != "") {
 				sql.append("and sei ='" + sei + "'");
 			}
 
-			// nen‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡‚ÍA’Ç‰Á‚·‚é
+			// nenï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ê‡ï¿½ÍAï¿½Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½
 			if (nen != "") {
 				sql.append("and nen ='" + nen + "'");
 			}
 
-			// sql•¶‚ğ•\¦
+			// sqlï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½
 			System.out.println(sql);
 
-			// sql•¶Às€”õ
+			// sqlï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½
 			pstmt = conn.prepareStatement(new String(sql));
 
-			// sql•¶Às
+			// sqlï¿½ï¿½ï¿½ï¿½ï¿½s
 			pstmt.execute();
 
-			// ÀsŒ‹‰Ê‚ğAResultSetƒNƒ‰ƒX‚É‘ã“ü
+			// ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Ê‚ï¿½ï¿½AResultSetï¿½Nï¿½ï¿½ï¿½Xï¿½É‘ï¿½ï¿½
 			rset = pstmt.executeQuery();
 
-			// ‘JˆÚƒy[ƒW‚ÖAˆø“n‚µiAttribute‚Å’Ç‰Á‚·‚éj
+			// ï¿½Jï¿½Úƒyï¿½[ï¿½Wï¿½ÖAï¿½ï¿½ï¿½nï¿½ï¿½ï¿½iAttributeï¿½Å’Ç‰ï¿½ï¿½ï¿½ï¿½ï¿½j
 			request.setAttribute("kekka", rset);
 
-			// search.jsp‚Ö‘JˆÚ
+			// search.jspï¿½Ö‘Jï¿½ï¿½
 			request.getRequestDispatcher("/search.jsp").forward(request, response);
 
-			// g—p‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğI—¹‚³‚¹‚é
+			// ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			rset.close();
 			pstmt.close();
 			conn.close();
@@ -97,13 +97,13 @@ public class SearchServlet extends HttpServlet {
 		} catch (Exception e) {
 //			e.printStackTrace();
 //			
-//			String status ="ŒŸõ‚É¸”s‚µ‚Ü‚µ‚½BŠÇ—Ò‚É˜A—‚µ‚Ä‚­‚¾‚³‚¢B";					
+//			String status ="ï¿½ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½Bï¿½Ç—ï¿½ï¿½Ò‚É˜Aï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B";					
 //			request.setAttribute("status", status);
 //			request.getRequestDispatcher("/result.jsp").forward(request, response);
 
 		} finally {
 			try {
-				// ”O‚Ì‚½‚ßAfinally‚ÅDB‚Æ‚ÌÚ‘±‚ğØ’f‚µ‚Ä‚¨‚­
+				// ï¿½Oï¿½Ì‚ï¿½ï¿½ßAfinallyï¿½ï¿½DBï¿½Æ‚ÌÚ‘ï¿½ï¿½ï¿½Ø’fï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
 				conn.close();
 			} catch (Exception e) {
 			}
