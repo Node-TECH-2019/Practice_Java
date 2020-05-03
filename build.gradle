@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'com.bmuschko', name:'gradle-tomcat-plugin', version:'2.0'
+    }
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -5,9 +14,14 @@ plugins {
 }
 
 apply plugin: 'war'
+apply plugin: 'com.bmuschko.tomcat'
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
+
+sourceSets{
+	main.java.srcDir "src/main/java/practice/java/practice_java/"
+}
 
 group = 'practice.java'
 version = '0.0.1-SNAPSHOT'
@@ -25,6 +39,18 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	// This dependency is used by the application.
+	implementation 'com.google.guava:guava:28.2-jre'
+	// Use JUnit test framework
+	testImplementation 'junit:junit:4.12'
+	providedCompile 'javax:javaee-web-api:6.0'
+	compile 'org.slf4j:slf4j-api:1.7.5'
+	def tomcatVersion = ''
+		tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+		"org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+		tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+			exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+		}
 }
 
 test {
@@ -32,7 +58,7 @@ test {
 }
 
 application {
-    mainClassName = 'HelloWorld.java'
+    mainClassName = 'practice.java.practice_java.HelloWorld'
 }
 
 //文字化け対策
